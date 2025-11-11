@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="App de previsão do tempo em tempo real — Nebula Forecast" />
+    <title>Nebula Forecast ☁️</title>
+
+    <!-- Fonte -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+
+  <body class="app day">
+    <!-- Classe 'day' ou 'night' será alternada via JS -->
+    <main class="container">
+      <header class="header">
+        <div class="brand">
+          <div class="logo">☁️</div>
+          <h1>Nebula Forecast</h1>
+        </div>
+        <p class="tag">Digite o nome de uma cidade e veja o clima em tempo real</p>
+      </header>
+
+      <form id="weather-form" class="search" autocomplete="off" novalidate>
+        <label for="city-input" class="sr-only">Cidade</label>
+        <input
+          id="city-input"
+          name="city"
+          type="search"
+          placeholder="Ex.: São Paulo"
+          required
+        />
+        <button id="search-btn" type="submit" aria-label="Buscar">
+          Buscar
+        </button>
+      </form>
+
+      <section id="card" class="card hidden" aria-live="polite">
+        <div class="card-header">
+          <div class="city-info">
+            <h2 id="city-name">Cidade</h2>
+            <time id="obs-time" datetime=""></time>
+          </div>
+
+          <div id="weather-icon" class="weather-icon" aria-hidden="true">
+            <!-- Ícone SVG inserido dinamicamente -->
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="stat">
+            <div class="label">Temperatura</div>
+            <div class="value"><span id="temperature">--</span>°C</div>
+          </div>
+
+          <div class="stat">
+            <div class="label">Vento</div>
+            <div class="value"><span id="windspeed">--</span> km/h</div>
+          </div>
+
+          <div class="stat">
+            <div class="label">Condição</div>
+            <div class="value" id="condition">--</div>
+          </div>
+        </div>
+      </section>
+
+      <div id="message" class="message" role="status"></div>
+
+      <footer class="footer">
+        <small>
+          Dados via <strong>Open-Meteo</strong> • Geocodificação via
+          <strong>OpenStreetMap</strong>
+        </small>
+      </footer>
+    </main>
+
+    <script src="./api.js" defer></script>
+  </body>
+</html>
