@@ -40,20 +40,31 @@ if (!form) {
 }
 
 // ===============================
+// Controle de requisição
+// ===============================
+let isRequesting = false;
+
+// ===============================
 // Função principal
 // ===============================
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   console.log("🔍 Formulário enviado!");
-  
+
   const city = cityInput.value.trim();
   console.log("🏙️ Cidade digitada:", city);
 
   if (!city) {
-    showMessage("Digite o nome de uma cidade.", "warn");
+    showMessage("Digite o nome de uma cidade", "warn");
     return;
   }
 
+  if (isRequesting) {
+    console.warn("⚠️ Requisição já em andamento, ignorando novo envio...");
+    return;
+  }
+
+  isRequesting = true;
   showMessage("Buscando dados...", "loading");
   card.classList.add("hidden");
 
@@ -63,11 +74,15 @@ form.addEventListener("submit", async (e) => {
     const geoRes = await fetch(
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`
     );
+
+    if (!geoRes.ok) throw new Error(`Erro HTTP: ${geoRes.status}`);
+
     const geoData = await geoRes.json();
     console.log("📍 Dados geográficos:", geoData);
 
     if (!geoData.length) {
-      showMessage("Cidade não encontrada. Tente novamente.", "error");
+      showMessage("Cidade não encontrada", "error");
+      isRequesting = false;
       return;
     }
 
@@ -79,10 +94,20 @@ form.addEventListener("submit", async (e) => {
     const weatherRes = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
     );
+
+    if (!weatherRes.ok) throw new Error(`Erro HTTP: ${weatherRes.status}`);
+
     const weatherData = await weatherRes.json();
     console.log("🌤️ Dados do clima:", weatherData);
 
     const weather = weatherData.current_weather;
+
+    if (!weather) {
+      showMessage("Erro: dados do clima ausentes", "error");
+      isRequesting = false;
+      return;
+    }
+
     const weatherText = weatherCodes[weather.weathercode] || "Condição desconhecida";
 
     // 3. Atualiza UI
@@ -104,23 +129,31 @@ form.addEventListener("submit", async (e) => {
 
     // 5. Exibe card
     card.classList.remove("hidden");
-    setTimeout(() => {
-      card.classList.add("fade-in");
-    }, 50);
+    setTimeout(() => card.classList.add("fade-in"), 50);
 
     // 6. Limpa mensagem
     showMessage("");
     console.log("✅ Interface atualizada com sucesso!");
   } catch (error) {
     console.error("❌ Erro capturado:", error);
-    showMessage("Erro ao buscar dados. Tente novamente mais tarde.", "error");
+
+    if (error.message.includes("429")) {
+      showMessage("Erro: muitas requisições. Aguarde um momento.", "error");
+    } else if (error.message.includes("500")) {
+      showMessage("Erro no servidor. Tente novamente mais tarde.", "error");
+    } else if (error.message.includes("CORS")) {
+      showMessage("Erro de conexão (CORS).", "error");
+    } else {
+      showMessage("Erro ao buscar dados", "error");
+    }
+  } finally {
+    isRequesting = false;
   }
 });
 
 // ===============================
 // Funções auxiliares
 // ===============================
-
 function showMessage(text, type = "") {
   console.log(`💬 Mensagem: ${text} (tipo: ${type})`);
   messageEl.textContent = text;
@@ -170,3 +203,11 @@ function getWeatherIcon(code) {
 }
 
 console.log("🚀 Script finalizado, aguardando interação do usuário...");
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    formatTime,
+    weatherCodes,
+    getWeatherIcon,
+  };
+}
