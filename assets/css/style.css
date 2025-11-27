@@ -588,6 +588,97 @@ h1 {
     0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
+/* ============================================
+   🔒 AVISOS LEGAIS (PRIVACIDADE E LICENÇA)
+   ============================================ */
+.legal-notices {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.privacy-notice,
+.license-notice {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  padding: 1.2rem 1.5rem;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.privacy-notice:hover,
+.license-notice:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.privacy-notice h4,
+.license-notice h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+  text-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.6),
+    0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.privacy-notice p,
+.license-notice p {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.privacy-notice strong,
+.license-notice strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Tema noturno */
+.night .privacy-notice,
+.night .license-notice {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.night .privacy-notice:hover,
+.night .license-notice:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .legal-notices {
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+  }
+  
+  .privacy-notice,
+  .license-notice {
+    padding: 1rem 1.2rem;
+  }
+  
+  .privacy-notice h4,
+  .license-notice h4 {
+    font-size: 0.95rem;
+  }
+  
+  .privacy-notice p,
+  .license-notice p {
+    font-size: 0.8rem;
+  }
+}
+
 /* ================================
    RESPONSIVIDADE
 ================================ */
