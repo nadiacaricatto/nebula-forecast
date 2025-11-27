@@ -5,17 +5,14 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="description" content="App de previsão do tempo em tempo real — Nebula Forecast" />
     <title>Nebula Forecast ☁️</title>
-
     <!-- Fonte -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
       rel="stylesheet"
     />
-
     <!-- Estilos -->
     <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
-
   <body class="app day">
     <!-- Classe 'day' ou 'night' será alternada via JS -->
     <main class="container">
@@ -25,8 +22,14 @@
           <h1>Nebula Forecast</h1>
         </div>
         <p class="tag">Digite o nome de uma cidade e veja o clima em tempo real</p>
+        
+        <!-- SEÇÃO DE DATA E HORA -->
+        <div class="datetime-display">
+          <time id="current-date" class="current-date"></time>
+          <time id="current-time" class="current-time"></time>
+        </div>
       </header>
-
+      
       <form id="weather-form" class="search" autocomplete="off" novalidate>
         <label for="city-input" class="sr-only">Cidade</label>
         <input
@@ -40,39 +43,44 @@
           Buscar
         </button>
       </form>
-
+      
+      <!-- CLIMA ATUAL -->
       <section id="card" class="card hidden" aria-live="polite">
         <div class="card-header">
           <div class="city-info">
             <h2 id="city-name">Cidade</h2>
             <time id="obs-time" datetime=""></time>
           </div>
-
           <div id="weather-icon" class="weather-icon" aria-hidden="true">
             <!-- Ícone SVG inserido dinamicamente -->
           </div>
         </div>
-
         <div class="card-body">
           <div class="stat">
             <div class="label">Temperatura</div>
             <div class="value"><span id="temperature">--</span>°C</div>
           </div>
-
           <div class="stat">
             <div class="label">Vento</div>
             <div class="value"><span id="windspeed">--</span> km/h</div>
           </div>
-
           <div class="stat">
             <div class="label">Condição</div>
             <div class="value" id="condition">--</div>
           </div>
         </div>
       </section>
-
+      
+      <!-- 🆕 PREVISÃO DE 5 DIAS -->
+      <section id="forecast-section" class="forecast-section hidden" aria-live="polite">
+        <h3 class="forecast-title">Previsão para os próximos 5 dias</h3>
+        <div id="forecast-container" class="forecast-container">
+          <!-- Cards dos próximos 5 dias serão inseridos aqui via JS -->
+        </div>
+      </section>
+      
       <div id="message" class="message" role="status"></div>
-
+      
       <footer class="footer">
         <small>
           Dados via <strong>Open-Meteo</strong> • Geocodificação via
@@ -80,7 +88,6 @@
         </small>
       </footer>
     </main>
-
     <script src="./api.js" defer></script>
   </body>
 </html>
